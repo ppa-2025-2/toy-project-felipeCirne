@@ -1,0 +1,13 @@
+ESTENDER API
+
+TICKET -> 
+   criador(usuario) -> 123
+   destinatario(usuario) default criador ->456
+   objeto -> computador
+   ação ->instalar autocad
+   detalhes -> necessario instalar x
+   local -> lab 7
+   observadores(usuario)[123,456]
+   created_at -> now
+   updated_at -> now
+
