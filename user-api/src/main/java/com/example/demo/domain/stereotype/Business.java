@@ -8,8 +8,6 @@ import java.lang.annotation.Target;
 
 import org.springframework.stereotype.Component;
 
-// Application Service
-// Domain Service (Business)
 
 @Target(ElementType.TYPE)
 @Documented

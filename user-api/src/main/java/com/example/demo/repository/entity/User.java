@@ -3,6 +3,7 @@ package com.example.demo.repository.entity;
 import java.util.HashSet;
 import java.util.Set;
 
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,18 +16,8 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-// Banco de Dados -> Entidade
-// POO: Programação Orientada a Objetos (POO)
-// Entidade: objeto que tem IDENTIDADE (muda com o tempo
-// O/R M: Object/Relational Mapping
-// Mapeamento Objeto/Relacional
-// Problema da Diferença de Representação
-// Impedance Mismatch (diferença de impedância)
-// Entity: DDD (Domain-Driven Design)
 
-// <<entidade>> -> stereotype -> estereótipo
-// Entity -> Metadata
-@Entity // anotação/annotation
+@Entity
 @Table(name = "users")
 public class User {
 
@@ -53,6 +44,9 @@ public class User {
         inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<Role> roles = new HashSet<>();
+
+    @ManyToMany(mappedBy = "observers")
+    private Set<Ticket> observedTickets = new HashSet<>();
 
     public Integer getId() {
         return id;
