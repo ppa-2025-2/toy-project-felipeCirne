@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.domain.IslandService;
+import com.example.demo.application.IslandApplicationService;
 import com.example.demo.repository.IslandRepository;
 import com.example.demo.repository.entity.Island;
 
@@ -20,18 +20,20 @@ import com.example.demo.repository.entity.Island;
 @RequestMapping("/api/v1/islands")
 public class IslandController {
 
-    private final IslandService islandService;
+    private final IslandApplicationService islandApplicationService;
     private final IslandRepository islandRepository;
 
-    public IslandController(IslandService islandService, IslandRepository islandRepository) {
-        this.islandService = islandService;
+    public IslandController(
+            IslandApplicationService islandApplicationService,
+            IslandRepository islandRepository) {
+        this.islandApplicationService = islandApplicationService;
         this.islandRepository = islandRepository;
     }
 
     @PostMapping("/allocate/{userId}")
     @ResponseStatus(code = HttpStatus.OK)
     public ResponseEntity<String> allocateWorkstation(@PathVariable Integer userId) {
-        islandService.alocarWorkstationDisponivel(userId);
+        islandApplicationService.alocarWorkstationDisponivel(userId);
         return ResponseEntity.ok("Workstation alocada com sucesso para o usuário " + userId);
     }
 
