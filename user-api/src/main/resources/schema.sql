@@ -6,27 +6,6 @@ CREATE TABLE IF NOT EXISTS users (
     created_at TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS tickets (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    owner_id INTEGER NOT NULL REFERENCES users(id),
-    recipient_id INTEGER NOT NULL REFERENCES users(id),
-    manager_id INTEGER REFERENCES users(id),
-    object TEXT NOT NULL,
-    action TEXT NOT NULL,
-    details TEXT NOT NULL,
-    local TEXT NOT NULL,
-    status TEXT NOT NULL DEFAULT 'TODO',
-    cancel_reason TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE IF NOT EXISTS ticket_observers (
-    ticket_id  INTEGER NOT NULL REFERENCES tickets(id),
-    user_id  INTEGER NOT NULL REFERENCES users(id),
-    PRIMARY KEY(ticket_id,user_id)
-);
-
 CREATE TABLE IF NOT EXISTS roles (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name VARCHAR(255) UNIQUE NOT NULL
@@ -46,4 +25,26 @@ CREATE TABLE IF NOT EXISTS profiles (
     company VARCHAR(255),
     type VARCHAR(255),
     FOREIGN KEY (id) REFERENCES users(id)
+);
+
+DROP TABLE IF EXISTS islands;
+
+-- 2:PAIR, 3:TRIANGLE, 4:SQUARE, 6:RECTANGULAR, 8: CIRCULAR
+CREATE TABLE IF NOT EXISTS islands (
+    id          INTEGER     NOT NULL PRIMARY KEY AUTOINCREMENT,
+    disposition VARCHAR(20) NOT NULL,
+    content     TEXT        NOT NULL,
+    created_at  TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at  TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+DROP TABLE IF EXISTS workstations;
+
+CREATE TABLE IF NOT EXISTS workstations (
+    id          VARCHAR(10) NOT NULL PRIMARY KEY,
+    island_id   INTEGER     NOT NULL REFERENCES island(id),
+    user_id     INTEGER         NULL REFERENCES users(id),
+    specs       TEXT        NOT NULL,
+    created_at  TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at  TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP
 );

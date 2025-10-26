@@ -1,5 +1,14 @@
 package com.example.demo.controller.dto;
 
+/*
+ * -- C -> Mother of All Languages
+ * -- Turing Complete Language
+ * -- LINGUAGEM DECLARATIVA (linguagem de pedidos)
+ * CREATE TABLE users (
+ *      name VARCHAR(20) NOT NULL CHECK LEN(name) >= 3 
+ * )
+ */
+
 import java.util.List;
 
 import org.hibernate.validator.constraints.Length;
@@ -15,17 +24,13 @@ public record NewUserDTO(
         @NotBlank(message = "Não pode ser composta apenas de espaços")
         @Length(min = 3, message = "O nome de ter no mínimo 3 caracteres")
         String name,
-
         String handle,
         @NotNull(message = "O e-mail é obrigatório")
         @Email(message = "Deve ser um e-mail válido")
         String email,
-
         @NotNull(message = "A senha é obrigatória")
         String password,
-
         String company,
-        
         Profile.AccountType type,
         List<String> roles
 )  {

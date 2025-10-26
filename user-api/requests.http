@@ -38,73 +38,30 @@ Content-Type: application/json
     "company": "potato inc"
 }
 
-
-### Get all tickets
-
-GET /api/v1/tickets HTTP/1.1
+### Test 1: Get all islands
+GET /api/v1/islands HTTP/1.1
 Host: localhost:8080
 Accept: application/json
 
+### Test 2: Get islands with available workstations
+GET /api/v1/islands/available HTTP/1.1
+Host: localhost:8080
+Accept: application/json
 
-
-### POST ticket
-
-POST /api/v1/tickets HTTP/1.1
+### Test 3: Create first user for allocation
+POST /api/v1/users HTTP/1.1
 Host: localhost:8080
 Content-Type: application/json
 
 {
-    
-    "ownerId":1,
-    "recipientId":1,
-    "object":"TESTE",
-    "action":"TESTE",
-    "details":"kahhfjlhajfhajkfh",
-    "local":"TESTE"
+    "email": "joao@example.com",
+    "password": "senha123abc",
+    "handle": "joaosilva",
+    "name": "João Silva",
+    "roles": [],
+    "company": "Tech Corp"
 }
 
-### Patch Ticket
-
-PATCH /api/v1/tickets/8 HTTP/1.1
+### Test 4: Allocate workstation for user ID 1
+POST /api/v1/islands/allocate/1 HTTP/1.1
 Host: localhost:8080
-Content-Type: application/json
-
-{
-    "managerId":1,
-    "status":"CANCELED",
-    "cancelReason":"TESTE"
-}
-
-### Patch Ticket NOT FOUND
-
-PATCH /api/v1/tickets/9999999 HTTP/1.1
-Host: localhost:8080
-Content-Type: application/json
-
-{
-    "managerId":1,
-    "status":"CANCELED",
-    "cancelReason":"TESTE"
-}
-
-### Patch Ticket STATUS INVALID
-
-PATCH /api/v1/tickets/9 HTTP/1.1
-Host: localhost:8080
-Content-Type: application/json
-
-{
-    "managerId":1,
-    "status":"fjasfjkalfahfjahfja"
-}
-
-### Patch Ticket STATUS Valid
-
-PATCH /api/v1/tickets/3 HTTP/1.1
-Host: localhost:8080
-Content-Type: application/json
-
-{
-    "managerId":2,
-    "status":"doing"
-}

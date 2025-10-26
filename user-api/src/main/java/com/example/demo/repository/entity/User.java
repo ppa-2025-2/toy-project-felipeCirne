@@ -3,6 +3,8 @@ package com.example.demo.repository.entity;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -16,8 +18,18 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+// Banco de Dados -> Entidade
+// POO: Programação Orientada a Objetos (POO)
+// Entidade: objeto que tem IDENTIDADE (muda com o tempo
+// O/R M: Object/Relational Mapping
+// Mapeamento Objeto/Relacional
+// Problema da Diferença de Representação
+// Impedance Mismatch (diferença de impedância)
+// Entity: DDD (Domain-Driven Design)
 
-@Entity
+// <<entidade>> -> stereotype -> estereótipo
+// Entity -> Metadata
+@Entity // anotação/annotation
 @Table(name = "users")
 public class User {
 
@@ -28,10 +40,13 @@ public class User {
     @Column(nullable = false, unique = true, length = 255)
     private String email;
 
+    @JsonIgnore
     @Column(nullable = false, length = 255)
     private String password;
 
-    @Column(nullable = false, unique = true, length = 255)
+    // baixa coesão
+    @JsonProperty(value = "username") // payload
+    @Column(nullable = false, unique = true, length = 255) // banco
     private String handle;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
@@ -44,9 +59,6 @@ public class User {
         inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<Role> roles = new HashSet<>();
-
-    @ManyToMany(mappedBy = "observers")
-    private Set<Ticket> observedTickets = new HashSet<>();
 
     public Integer getId() {
         return id;
