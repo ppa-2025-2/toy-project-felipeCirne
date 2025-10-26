@@ -26,6 +26,25 @@ public class Workstation extends BaseEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
+    
+    public boolean isAvailable() {
+        return user == null;
+    }
+
+    
+    public void assignUser(User user) {
+        if (!isAvailable()) {
+            throw new IllegalStateException("Workstation " + this.id + " já está ocupada");
+        }
+        this.user = user;
+    }
+
+    
+    public void releaseUser() {
+        this.user = null;
+    }
+
+    
     public User getUser() {
         return user;
     }
@@ -92,8 +111,4 @@ public class Workstation extends BaseEntity {
             return false;
         return true;
     }
-
-    // equals e o hashCode
-    // CTRL+P, CTRL+SHIFT+P, CTRL+ESPAÇO, CTRL+. (code assist)
-    
 }

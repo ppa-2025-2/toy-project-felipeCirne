@@ -17,23 +17,16 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
-// one-to-one (um-para-um)
-// one-to-many or many-to-one
-// relationship owner (proprietário do relacionamento)
-
-// many-to-many
-// exigir uma tabela associativa
-
 @Entity
 @Table(name = "islands")
 public class Island extends BaseEntity {
 
     public enum Disposition {
-        PAIR(2), // 0
-        TRIANGLE(3), // 1
-        SQUARE(4), // 2
-        RECTANGLE(6), // 3
-        CIRCULAR(8); // 4
+        PAIR(2),
+        TRIANGLE(3),
+        SQUARE(4),
+        RECTANGLE(6),
+        CIRCULAR(8);
 
         private final int placements;
         
@@ -48,7 +41,6 @@ public class Island extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    // @Column(nullable = false)
     private Long id;
 
     @Column(name = "content", nullable = false)
@@ -64,9 +56,49 @@ public class Island extends BaseEntity {
         orphanRemoval = true)
     private Set<Workstation> workstations = new HashSet<>();
 
+    
     public void removeWorkstations(Predicate<Workstation> predicate) {
         this.workstations.removeIf(predicate);
     }
+
+   
+    public Optional<Workstation> firstAvailableWorkstation() {
+        return this.workstations.stream()
+            .filter(Workstation::isAvailable)
+            .findFirst();
+    }
+
+    
+    public void assignUserToFirstAvailableWorkstation(User user) {
+        firstAvailableWorkstation()
+            .ifPresentOrElse(
+                ws -> ws.assignUser(user),
+                () -> {
+                    throw new IllegalStateException("Nenhuma workstation disponível na ilha " + this.id);
+                }
+            );
+    }
+
+    
+    public long countOccupiedWorkstations() {
+        return workstations.stream()
+            .filter(ws -> !ws.isAvailable())
+            .count();
+    }
+
+    
+    public long countAvailableWorkstations() {
+        return workstations.stream()
+            .filter(Workstation::isAvailable)
+            .count();
+    }
+
+    
+    public boolean hasAvailableWorkstations() {
+        return countAvailableWorkstations() > 0;
+    }
+
+   
 
     public Set<Workstation> getWorkstations() {
         return workstations;
@@ -100,8 +132,7 @@ public class Island extends BaseEntity {
         this.disposition = disposition;
     }
 
-
-
+   
     @Override
     public String toString() {
         return "Island [id=" + id 
@@ -111,17 +142,4 @@ public class Island extends BaseEntity {
         + ", updatedAt=" + updatedAt 
         + "]";
     }
-
-    public Optional<Workstation> firstAvailableWorkstation() {
-        return this.workstations.stream()
-            .filter(w -> w.getUser() == null)
-            .findFirst();
-    }
-
-    public void assignUserToTheFirstWorkstationAvailable(User user) {
-        firstAvailableWorkstation()
-                .ifPresent(w -> w.setUser(user));
-    }
-
-    
 }

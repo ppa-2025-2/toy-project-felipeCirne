@@ -63,5 +63,6 @@ Content-Type: application/json
 }
 
 ### Test 4: Allocate workstation for user ID 1
-POST /api/v1/islands/allocate/1 HTTP/1.1
+POST /api/v1/islands/allocate/3 HTTP/1.1
 Host: localhost:8080
+
