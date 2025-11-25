@@ -1,0 +1,14 @@
+
+### Realizar Notificação
+
+POST /api/v1/evidences HTTP/1.1
+Host: localhost:8083
+Content-Type: multipart/form-data; boundary=upload
+
+--upload
+content-disposition: form-data; name=evidence; filename=teste1.png
+Content-Type: image/png
+
+< ./teste.png
+
+--upload--
